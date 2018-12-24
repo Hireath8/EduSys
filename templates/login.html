@@ -21,21 +21,21 @@
   <link href="/static/css/style.css" rel="stylesheet">
   <link href="/static/css/style-responsive.css" rel="stylesheet">
 
-      <style type="text/css">
-        .label-inline {
-          position: relative;
-          display: block;
-          margin-top: 10px;
-          margin-bottom: 10px;
-        }
-        .radio-left{
-          margin-right: 15px;
-        }
-        .radio-right{
-          margin-left: 15px;
-        }
-      </style>
-  
+  <style type="text/css">
+    .label-inline {
+      position: relative;
+      display: block;
+      margin-top: 10px;
+      margin-bottom: 10px;
+    }
+    .radio-left{
+      margin-right: 15px;
+    }
+    .radio-right{
+      margin-left: 15px;
+    }
+  </style>
+
   <!-- =======================================================
     Template Name: Dashio
     Template URL: https://templatemag.com/dashio-bootstrap-admin-template/
@@ -50,18 +50,22 @@
       *********************************************************************************************************************************************************** -->
   <div id="login-page">
     <div class="container">
-      <form class="form-login" action="#" style="min-width: 250px; margin-top: 110px;">
+      <form class="form-login" onsubmit="return Login(this)" style="min-width: 250px; margin-top: 110px;">
         <h2 class="form-login-heading">sign in now</h2>
         <div class="login-wrap">
-          <input type="text" class="form-control" placeholder="User ID" autofocus>
+          <div class="form-group" style="margin-bottom: 0;">
+            <input type="text" class="form-control" placeholder="User ID" autofocus name="id">
           <br>
-          <input type="password" class="form-control" placeholder="Password">
+          </div>
+          <div class="form-group" style="margin-bottom: 0;">
+            <input type="password" class="form-control" placeholder="Password" name="pw">
+          </div>
           <label class="label-inline" style="text-align: center;">
             <span class="radio-left">
-              <input type="radio" name="character" id="char1"> Student
+              <input type="radio" name="character" id="char1" value="stu" checked="checked"> Student
             </span>
             <span class="radio-right">
-              <input type="radio" name="character" id="char2"> Teacher
+              <input type="radio" name="character" id="char2" value="tec"> Teacher
             </span>
           </label>
           <label class="label-inline">
@@ -70,7 +74,7 @@
             <a data-toggle="modal" href="login.html#myModal"> Forgot Password?</a>
             </span>
             </label>
-          <button class="btn btn-theme btn-block" href="index.html" type="submit" name="Sign"><i class="fa fa-lock"></i> SIGN IN</button>
+          <button class="btn btn-theme btn-block" name="Sign"><i class="fa fa-lock"></i> SIGN IN</button>
           <hr>
           <div class="login-social-link centered">
             <p>or maybe you haven't had one</p>
@@ -79,10 +83,11 @@
               </a>
             <hr>
             <p>or you could just sign in as a visitor</p>
-            <button class="btn btn-theme btn-block" href="index.html" type="submit" name="visitorSign"><i class="fa fa-user"></i> SIGN IN</button>
+            <button class="btn btn-theme btn-block" type="submit" name="visitorSign"><i class="fa fa-user"></i> SIGN IN</button>
           </div>
         </div>
-        <!-- Modal -->
+      </form>
+      <!-- Modal -->
         <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
           <div class="modal-dialog">
             <div class="modal-content">
@@ -102,7 +107,6 @@
           </div>
         </div>
         <!-- modal -->
-      </form>
     </div>
   </div>
   <!-- js placed at the end of the document so the pages load faster -->
@@ -116,7 +120,59 @@
       speed: 500
     });
 
+    $('.form-login :text, .form-login :password').on('focus', function() {
+      $(this).parent().removeClass('has-error');
+    });
 
+    function Login(frm){
+    //alert("aaa");
+
+    $('.form-login').find(':text, :password').each(function(){
+        if( $(this).val() == "" ) {
+            $(this).parent().addClass('has-error');
+        }
+        else {
+            $(this).parent().removeClass('has-error');
+        }
+    });
+
+    if ($("input[name='id']").parent().attr("class").match("has-error") != null ||
+        $("input[name='pw']").parent().attr("class").match("has-error") != null)
+    {
+        return false;
+    }
+
+
+    var data = "id=" + $("input[name='id']").val() +
+               "&pw=" + $("input[name='pw']").val() +
+               "&char=" + $(':radio:checked').val() +
+               "&rem=" + $(':checkbox').prop('checked');
+
+   alert(data);
+    /*$.ajax({
+        type:"POST",
+        dataType:"json",
+        url:"/LibraryManagementSystem/Login/log_in",
+        data:data,
+        async:false,
+        success:function(result){
+            console.log(result);
+            //alert("SUCCESS!");
+            if (result.ifsuccess){
+                window.location.href='Manage';
+            }
+            else{
+                alert("WRONG INPUT!!!\nTRY AGAIN!");
+            }
+        },
+        error:function(msg){
+            console.log(msg);
+            alert("SOMETHING out of expectation happened");
+        }
+    });*/
+
+    return false;
+  }
   </script>
 </body>
 
