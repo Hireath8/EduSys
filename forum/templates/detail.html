@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<h1>
+    {{ forum.name }}
+</h1>
+
+
+{% if posts %}
+    <ul>
+    {% for post in posts %}
+        <li><a href="{% url 'forum:post_detail' post.id %}">{{ post.title }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No forum are available.</p>
+{% endif %}
+
+
+
+
+<form action="{% url 'forum:create_post' forum.id %}" method="post">
+{% csrf_token %}
+    <input type="text" name="title" id="title">
+    <label>Title</label>
+    <input type="text" name="content" id="content">
+    <label>Content</label>
+<input type="submit" value="Vote">
+</form>
+
+
+
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+{% if forums %}
+    <ul>
+    {% for forum in forums %}
+        <li><a href="{% url 'forum:detail' forum.id %}">{{ forum.name }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No forum are available.</p>
+{% endif %}
+<form action="{% url 'forum:create_forum' %}" method="post">
+{% csrf_token %}
+    <input type="text" name="course_name" id="course_name">
+    <label>Course</label>
+    <input type="text" name="name" id="name">
+    <label>Name</label>
+<input type="submit" value="Vote">
+</form>
+
+</body>
+</html>
