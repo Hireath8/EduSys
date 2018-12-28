@@ -4,7 +4,7 @@ from django.http import HttpResponse, JsonResponse
 from .models import User
 from django.shortcuts import render, get_object_or_404
 from django.views.decorators.csrf import csrf_protect
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, login
 
 
 # Create your views here.
@@ -20,6 +20,7 @@ def auth(request):
     # return JsonResponse({'status': 'fail'})
     user = authenticate(username=request.POST['id'], password=request.POST['pw'])
     if user is not None:
+        login(request, user)
         return JsonResponse({'status': 'success',
                              'id': user.get_username(),
                              'char': user.character})
